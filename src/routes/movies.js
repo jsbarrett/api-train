@@ -10,3 +10,4 @@ router.post('/movies/:id/update', resource, respond(MoviesController.update))
 router.post('/movies/:id/delete', resource, respond(MoviesController.delete))
 
 module.exports = router
+

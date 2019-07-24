@@ -4,9 +4,9 @@ const db = new sqlite.Database(`${database}`)
 const Movie = {
   all () {
     return new Promise((resolve, reject) => {
-      db.all('SELECT * FROM movies', function (err, rows) {
+      db.all('SELECT * FROM movies', (err, results) => {
         if (err) reject(err)
-        resolve(rows)
+        resolve(results)
       })
     })
   },
@@ -40,9 +40,9 @@ const Movie = {
 
   getById (id) {
     return new Promise((resolve, reject) => {
-      db.get('SELECT * FROM movies WHERE id = ?', [id], function (err, row) {
+      db.get('SELECT * FROM movies WHERE id = ?', [id], function (err, results) {
         if (err) reject(err)
-        resolve(row)
+        resolve(results)
       })
     })
   },
