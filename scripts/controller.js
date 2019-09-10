@@ -1,4 +1,4 @@
-function generateControllerTemplate (modelname, Modelname, ModelPlural) {
+function generateControllerTemplate ({ modelname, Modelname, ModelPlural, fields }) {
   return `const { ${Modelname} } = require('../models/${Modelname}')
 
 const ${ModelPlural}Controller = {
@@ -21,9 +21,9 @@ const ${ModelPlural}Controller = {
 
   async update ({ ${modelname}, body }) {
     return await ${Modelname}.update({
-      id: ${modelname}.id
-      // example
-      // title: body.title || ${modelname}.title
+      id: ${modelname}.id,
+${ fields.map(field => (
+`      ${field}: body.${field} || ${modelname}.${field}`)).join(',\n') }
     })
   }
 }

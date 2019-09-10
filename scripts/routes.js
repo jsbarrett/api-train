@@ -1,4 +1,4 @@
-function generateRoutesTemplate (Modelname, modelname, plural) {
+function generateRoutesTemplate ({ Modelname, modelname, plural }) {
   return `const router = require('express').Router()
 const { ${Modelname} } = require('../models/${Modelname}')
 const { respond, resource } = require(\`\${lib}/respond\`)('${modelname}', ${Modelname}.getById)

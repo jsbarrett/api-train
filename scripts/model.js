@@ -1,4 +1,4 @@
-function generateModelTemplate (Modelname, tablename, fields) {
+function generateModelTemplate ({ Modelname, tablename, fields }) {
   return `const sqlite = require('sqlite3').verbose()
 const db = new sqlite.Database(\`\${database}\`)
 
@@ -6,7 +6,7 @@ const ${Modelname} = {
   all () {
     return new Promise((resolve, reject) => {
       db.all('SELECT * FROM ${tablename}', function (err, rows) {
-        if (err) reject(err)
+        if (err) return reject(err)
         resolve(rows)
       })
     })
@@ -22,7 +22,7 @@ const ${Modelname} = {
         \`
       const values = [${fields.join(', ')}]
       db.run(sql, values, (err, results) => {
-        if (err) reject(err)
+        if (err) return reject(err)
         resolve(results)
       })
     })
@@ -33,7 +33,7 @@ const ${Modelname} = {
       const sql = 'DELETE FROM ${tablename} WHERE id = ?'
       const values = [id]
       db.run(sql, values, (err, results) => {
-        if (err) reject(err)
+        if (err) return reject(err)
         resolve(results)
       })
     })
@@ -42,7 +42,7 @@ const ${Modelname} = {
   getById (id) {
     return new Promise((resolve, reject) => {
       db.get('SELECT * FROM ${tablename} WHERE id = ?', [id], function (err, row) {
-        if (err) reject(err)
+        if (err) return reject(err)
         resolve(row)
       })
     })
@@ -54,14 +54,13 @@ const ${Modelname} = {
         UPDATE
           ${tablename}
         SET
-          ${fields.map(x => `${x} = ?`).join(',\n')}
-          \${/* title = ? EXAMPLE */}
+${fields.map(x => (`          ${x} = ?`)).join(',\n')}
         WHERE
           id = ?
         \`
       const values = [${fields.join(', ')}, id]
       db.run(sql, values, (err, results) => {
-        if (err) reject(err)
+        if (err) return reject(err)
         resolve(results)
       })
     })
